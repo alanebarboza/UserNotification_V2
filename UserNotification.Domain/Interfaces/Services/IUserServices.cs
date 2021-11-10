@@ -16,5 +16,6 @@ namespace UserNotification.Domain.Interfaces.Services
         Task<Users> Select(int id);
         Task<Users> FirstOrDefault();
         Task<bool> Any(int id);
+        Task<ICommand> SendEmail(ICollection<EmailUsersCommand> listEmailUsersCommand);
     }
 }

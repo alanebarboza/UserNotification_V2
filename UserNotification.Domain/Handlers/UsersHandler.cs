@@ -7,24 +7,33 @@ using UserNotification.Domain.Entities;
 using System.Collections.Generic;
 using UserNotification.Shared.Commands;
 using System.Collections.ObjectModel;
+using UserNotification.Domain.Interfaces.Services;
+using UserNotification.Shared.Entities;
+using System.Linq;
 
 namespace UserNotification.Domain.Handlers
 {
     public class UsersHandler : IHandler<LoginCommand>, IHandler<CreateUsersCommand>, IHandler<UpdateUsersCommand>, IHandler<IdCommand>
     {
-        private IUsersRepository _usersRepository;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IEmailServices _emailServices;
+
         private readonly ICollection<string> childList = new Collection<string>() { "UsersNotifications" };
 
         public UsersHandler(IUsersRepository usersRepository)
         {
             _usersRepository = usersRepository;
         }
+        public UsersHandler(IEmailServices emailServices)
+        {
+            _emailServices = emailServices;
+        }
 
         public async Task<ICommand> Handle(LoginCommand loginCommand)
         {
             Users user = await _usersRepository.DoLogin(loginCommand);
             if (user == null)
-                return new CommandResult(200, new List<string>() { "Usuário ou Senha inválidos." });
+                return new CommandResult(400, new List<string>() { "Usuário ou Senha inválidos." });
             else
             {
                 user.EncodePassWord();
@@ -55,7 +64,7 @@ namespace UserNotification.Domain.Handlers
                 return new CommandResult(200, new List<string>() { "Usuário alterado com sucesso." });
             }
             else
-                return new CommandResult(204, new List<string>() { "Usuário não existe." });
+                return new CommandResult(400, new List<string>() { "Usuário não existe." });
         }
 
         public async Task<ICommand> Handle(IdCommand removeUserCommand)
@@ -66,7 +75,42 @@ namespace UserNotification.Domain.Handlers
                 return new CommandResult(200, new List<string>() { "Usuário excluído com sucesso." });
             }
             else
-                return new CommandResult(204, new List<string>() { "Usuário não existe." });
+                return new CommandResult(400, new List<string>() { "Usuário não existe." });
+        }
+
+        public async Task<ICommand> Handle(ICollection<EmailUsersCommand> listEmailUsersCommand)
+        {
+            string subject = "";
+            string body = "";
+            var emailsToSend = listEmailUsersCommand.ToList().Where(x => x.Notify.ToString().Contains("Email"));
+
+            if(!emailsToSend.Any())
+                return new CommandResult(400, new List<string>() { "Nenhuma notificação configurada para envio de Email." });
+
+            foreach (var emailUsersCommand in emailsToSend)
+            {
+                try
+                {
+                    subject = $@"Reminder of {emailUsersCommand.Description}";
+
+                    if (emailUsersCommand.Type.ToString() == "Bills")
+                    {
+                        body = $"This is a reminder of '{emailUsersCommand.Description}' that expires at {emailUsersCommand.PaymentDate} \r\n" +
+                        $"BarCode: {emailUsersCommand.BarCode} \r\n" +
+                        $"Value: {emailUsersCommand.Value}";
+                    }
+                    else
+                        body = $"This is a reminder of '{emailUsersCommand.Description}' that expires at {emailUsersCommand.PaymentDate} ";
+
+                    Email email = new Email(emailUsersCommand.Email, subject, body);
+                    await _emailServices.SendEmail(email);
+                }
+                catch (System.Exception)
+                {
+                    return new CommandResult(400, new List<string>() { "Email não enviado." });
+                }
+            }
+            return new CommandResult(200, new List<string>() { "Email enviado com sucesso." });
         }
     }
 }

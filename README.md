@@ -19,7 +19,7 @@
 - [x] Fluent Validation
 - [x] JWT Token
 - [x] Filters
-- [ ] Envio de Email das Notificações
+- [x] Envio de Email das Notificações
 - [ ] Mensageria (RabbitMQ)
 
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UserNotification.Application.Authentication.Interfaces;
 using UserNotification.Domain.Commands;
@@ -31,7 +32,7 @@ namespace UserNotification.Application.Controllers
         /// </summary>
         /// <returns>Se login efetuado com sucesso.</returns>
         /// <response code="200">Login efetuado com sucesso. ObjectResult populado com o objeto de Users. Token com o Token gerado para o Usuário</response>
-        /// <response code="204">Usuário ou Senha inválidos.</response>
+        /// <response code="400">Usuário ou Senha inválidos.</response>
         [HttpPost("DoLogin")]
         [AllowAnonymous]
         public async Task<IActionResult> DoLogin([FromBody] LoginCommand loginCommand)
@@ -58,7 +59,7 @@ namespace UserNotification.Application.Controllers
         /// </summary>
         /// <returns>Se o Usuário foi cadastrado.</returns>
         /// <response code="200">Usuário alterado com sucesso.</response>
-        /// <response code="204">Usuário não existe.</response>
+        /// <response code="400">Usuário não existe.</response>
         [HttpPost("Update")]
         [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateUsersCommand updateUserCommand) => Ok(await _userServices.Update(updateUserCommand));
@@ -68,7 +69,7 @@ namespace UserNotification.Application.Controllers
         /// </summary>
         /// <returns>Se o Usuário excluído.</returns>
         /// <response code="200">Usuário excluído com sucesso.</response>
-        /// <response code="204">Usuário não existe.</response>
+        /// <response code="400">Usuário não existe.</response>
         [HttpPost("Delete")]
         [Authorize]
         public async Task<IActionResult> Delete([FromBody] IdCommand removeUserCommand) => Ok(await _userServices.Delete(removeUserCommand));
@@ -90,5 +91,15 @@ namespace UserNotification.Application.Controllers
         [HttpGet("Select/{id}")]
         [Authorize]
         public async Task<IActionResult> Select(int id) => Ok(await _userServices.Select(id));
+
+        /// <summary>
+        /// Envio de Email para lembrar o Usuário
+        /// </summary>
+        /// <returns>Se o Email enviado com sucesso.</returns>
+        /// <response code="200">Email enviado com sucesso.</response>
+        /// <response code="400">Email não enviado.</response>
+        [HttpPost("SendEmail")]
+        [Authorize]
+        public async Task<IActionResult> SendEmail([FromBody] ICollection<EmailUsersCommand> listEmailUsersCommand) => Ok(await _userServices.SendEmail(listEmailUsersCommand));
     }
 }

@@ -25,6 +25,7 @@ using UserNotification.Domain.Interfaces.Services;
 using UserNotification.Domain.Validators;
 using UserNotification.Infra.DBContext;
 using UserNotification.Infra.Dependencies;
+using UserNotification.Shared.Entities;
 
 namespace UserNotification
 {
@@ -48,9 +49,12 @@ namespace UserNotification
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
             services.AddRepositoriesDependency();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<ITokenServices, TokenServices>();
+            services.AddTransient<IEmailServices, EmailServices>();
 
             services.AddMvc(x =>
                 {

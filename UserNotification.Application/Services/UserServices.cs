@@ -13,11 +13,13 @@ namespace UserNotification.Application.Services
     public sealed class UserServices : IUserServices
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly IEmailServices _emailServices;
         private readonly ICollection<string> childList = new Collection<string>() { "UsersNotifications" };
 
-        public UserServices(IUsersRepository usersRepository)
+        public UserServices(IUsersRepository usersRepository, IEmailServices emailServices)
         {
             _usersRepository = usersRepository;
+            _emailServices = emailServices;
         }
         public async Task<ICommand> DoLogin(LoginCommand loginCommand)
         {
@@ -59,6 +61,11 @@ namespace UserNotification.Application.Services
         public async Task<Users> FirstOrDefault()
         {
             return await _usersRepository.FirstOrDefault(childList);
+        }
+        public async Task<ICommand> SendEmail(ICollection<EmailUsersCommand> listEmailUsersCommand)
+        {
+            UsersHandler usersHandler = new UsersHandler(_emailServices);
+            return await usersHandler.Handle(listEmailUsersCommand);
         }
     }
 }
