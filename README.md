@@ -26,6 +26,7 @@
 
 ### Configurações 
   * Alterar a string de conexão em appSettings.Json ConnectionStrings:SQLServer.
+  * Alterar os dados de Remetente para Envio do Email em appSettings.Json (EmailSettings).
   * A Migration será executada automaticamente ao inciar a aplicação, criando assim o DataBase e suas Tabelas.
 
 
