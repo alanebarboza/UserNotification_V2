@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using UserNotification.Domain.Interfaces.Services;
 using UserNotification.Shared.Entities;
 using System.Linq;
+using UserNotification.Domain.Validators;
 
 namespace UserNotification.Domain.Handlers
 {
@@ -84,8 +85,18 @@ namespace UserNotification.Domain.Handlers
             string body = "";
             var emailsToSend = listEmailUsersCommand.ToList().Where(x => x.Notify.ToString().Contains("Email"));
 
-            if(!emailsToSend.Any())
+            if (!emailsToSend.Any())
                 return new CommandResult(400, new List<string>() { "Nenhuma notificação configurada para envio de Email." });
+
+            List<string> listErrosValidator = new List<string>();
+            var validator = new EmailUsersCommandValidator();
+            foreach (var email in emailsToSend)
+            {
+                var resultValidate = validator.Validate(email);
+                resultValidate.Errors.ForEach(x => listErrosValidator.Add(x.ErrorMessage));
+            }
+            if (listErrosValidator.Any())
+                return new CommandResult(400, listErrosValidator);
 
             foreach (var emailUsersCommand in emailsToSend)
             {
@@ -94,13 +105,9 @@ namespace UserNotification.Domain.Handlers
                     subject = $@"Reminder of {emailUsersCommand.Description}";
 
                     if (emailUsersCommand.Type.ToString() == "Bills")
-                    {
-                        body = $"This is a reminder of '{emailUsersCommand.Description}' that expires at {emailUsersCommand.PaymentDate} \r\n" +
-                        $"BarCode: {emailUsersCommand.BarCode} \r\n" +
-                        $"Value: {emailUsersCommand.Value}";
-                    }
+                        body = EmailTemplates.UsersBills(emailUsersCommand.Description, emailUsersCommand.PaymentDate, emailUsersCommand.BarCode, emailUsersCommand.Value);
                     else
-                        body = $"This is a reminder of '{emailUsersCommand.Description}' that expires at {emailUsersCommand.PaymentDate} ";
+                        body = EmailTemplates.UsersNotificationOnly(emailUsersCommand.Description, emailUsersCommand.PaymentDate);
 
                     Email email = new Email(emailUsersCommand.Email, subject, body);
                     await _emailServices.SendEmail(email);

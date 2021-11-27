@@ -7,6 +7,17 @@ namespace UserNotification.Domain.Commands
 {
     public sealed class EmailUsersCommand : ICommand
     {
+        public EmailUsersCommand(string phone, string email, NotificationTypeEnum type, string description, decimal value, string barCode, DateTime? paymentDate, NotificationNotifyEnum notify)
+        {
+            Phone = phone;
+            Email = email;
+            Type = type;
+            Description = description;
+            Value = value;
+            BarCode = barCode;
+            PaymentDate = paymentDate;
+            Notify = notify;
+        }
         public string Phone { get; set; }
         public string Email { get; set; }
         public NotificationTypeEnum Type { get; set; }

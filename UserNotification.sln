@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotification.Application", "UserNotification.Application\UserNotification.Application.csproj", "{CB627FF9-611A-4FC8-BB02-A4C2671E5260}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserNotification.Application", "UserNotification.Application\UserNotification.Application.csproj", "{CB627FF9-611A-4FC8-BB02-A4C2671E5260}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application", "1 - Application", "{C5BBEAE8-93E5-484B-8945-1373F092A02E}"
 EndProject
@@ -13,11 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Infra", "3 - Infra", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Shared", "4 - Shared", "{964B9F13-1E43-4347-91A1-279B3CBF1D15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotification.Domain", "UserNotification.Domain\UserNotification.Domain.csproj", "{14486CE6-00A6-49B1-B3F7-6E3C5F6766B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserNotification.Domain", "UserNotification.Domain\UserNotification.Domain.csproj", "{14486CE6-00A6-49B1-B3F7-6E3C5F6766B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotification.Infra", "UserNotification.Infra\UserNotification.Infra.csproj", "{27F69F54-19D4-4FCC-A3D4-CC796BE27CA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserNotification.Infra", "UserNotification.Infra\UserNotification.Infra.csproj", "{27F69F54-19D4-4FCC-A3D4-CC796BE27CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotification.Shared", "UserNotification.Shared\UserNotification.Shared.csproj", "{13101825-B5FF-4805-8AA5-86CAE3EB00C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserNotification.Shared", "UserNotification.Shared\UserNotification.Shared.csproj", "{13101825-B5FF-4805-8AA5-86CAE3EB00C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotification.Tests", "UserNotification.Tests\UserNotification.Tests.csproj", "{57D37FC6-D28A-4110-9D13-D597E7E8A6D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Tests", "5 - Tests", "{B1654C1C-7D85-478C-A382-D2851B49FA8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{13101825-B5FF-4805-8AA5-86CAE3EB00C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13101825-B5FF-4805-8AA5-86CAE3EB00C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13101825-B5FF-4805-8AA5-86CAE3EB00C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D37FC6-D28A-4110-9D13-D597E7E8A6D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57D37FC6-D28A-4110-9D13-D597E7E8A6D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57D37FC6-D28A-4110-9D13-D597E7E8A6D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D37FC6-D28A-4110-9D13-D597E7E8A6D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{14486CE6-00A6-49B1-B3F7-6E3C5F6766B1} = {EFA05993-34E4-459C-9922-B4C64D111BA6}
 		{27F69F54-19D4-4FCC-A3D4-CC796BE27CA9} = {3AE846A9-6DFA-43DF-9873-A150353D9E74}
 		{13101825-B5FF-4805-8AA5-86CAE3EB00C9} = {964B9F13-1E43-4347-91A1-279B3CBF1D15}
+		{57D37FC6-D28A-4110-9D13-D597E7E8A6D5} = {B1654C1C-7D85-478C-A382-D2851B49FA8F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9DDA6F0F-4DD5-470A-9907-B68666D2008B}
